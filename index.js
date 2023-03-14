@@ -1,5 +1,6 @@
 import express from "express"
 import cors from "cors"
+import { config } from "./config.js"
 import tasksRoutes from "./routes/tasks.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import "./utils/auth/index.js"
@@ -14,5 +15,7 @@ app.use(cookieParser());
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(process.env.PORT || 3000);
+console.log(config.PORT);
+
+app.listen(process.env.PORT || config.PORT)
 console.log("server is running")

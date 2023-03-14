@@ -1,13 +1,5 @@
 node_modules
-db.js
 .env
-config.js
-User.jsx
-nodemailer.js
-pass-hash.js
-pass-verify.js
-token-sign.js
-token-verify.js
 
 # Logs
 logs

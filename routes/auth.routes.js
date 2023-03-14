@@ -1,7 +1,5 @@
 import { Router } from "express";
-import jwt from "jsonwebtoken";
 import passport from "passport";
-import cookieParser from "cookie-parser";
 import { createUser, logOut, loginVerify, getUsers, recoveryPassword, passwordToChange, getEmailUser } from "../controllers/login.controller.js";
 import { login } from "../controllers/login.controller.js";
 
