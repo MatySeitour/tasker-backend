@@ -17,5 +17,5 @@ app.use("/api/auth", authRoutes);
 
 console.log(config.PORT);
 
-app.listen(config.PORT)
+app.listen(process.env.PORT || config.PORT)
 console.log("server is running")
