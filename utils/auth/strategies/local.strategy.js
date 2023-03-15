@@ -8,7 +8,7 @@ export const localStrategy = new Strategy(async (username, password, done) => {
     try {
         const user = await getNameUser(username);
         if (!user) {
-            done(boom.unauthorized(), false);
+            done(null, false);
         }
         const isMatch = await bcrypt.compare(password, user.password);
 
