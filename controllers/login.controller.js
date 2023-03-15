@@ -10,17 +10,17 @@ export const createUser = async (req, res) => {
     try {
         const { username, password, email } = req.body;
         if (username === "" || username.length < 3) {
-            return res.status(401).json({
+            return res.status(409).json({
                 message: "username must have at least 3 characters"
             })
         }
         else if (password === "" || password.length < 5) {
-            return res.status(500).json({
+            return res.status(409).json({
                 message: "password must have at least 5 characters"
             })
         }
         else if (email === "") {
-            return res.status(500).json({
+            return res.status(409).json({
                 message: "you need to write an email"
             })
         }
@@ -55,9 +55,10 @@ export const login = async (req, res, next) => {
             username: user.user,
         }
         const token = jwt.sign(payload, config.jwtSecret);
-        res.cookie("session", token);
+        // res.cookie("session", token);
         res.json({
             username: user.user,
+            token
         })
     }
     catch (error) {
@@ -66,35 +67,36 @@ export const login = async (req, res, next) => {
     }
 }
 
-export const logOut = async (req, res, next) => {
-    try {
-        res.clearCookie("session");
-        res.status(200).json({
-            message: "log out"
-        })
-    }
-    catch (error) {
-        console.error(error)
-        next(error);
-    }
-}
+// export const logOut = async (req, res, next) => {
+//     try {
+//         res.clearCookie("login-token");
+//         res.status(200).json({
+//             message: "log out"
+//         })
+//     }
+//     catch (error) {
+//         console.error(error)
+//         next(error);
+//     }
+// }
 
-export const loginVerify = async (req, res, next) => {
-    try {
-        const user = req.user;
-        const payload = {
-            id: user.id,
-            role: user.username,
-        }
-        const token = jwt.sign(payload, config.jwtSecret);
-        res.json({
-            user,
-        })
-    }
-    catch (error) {
-        next(error);
-    }
-}
+// export const loginVerify = async (req, res, next) => {
+//     try {
+//         console.log(req.user);
+//         const user = req.user;
+//         const payload = {
+//             id: user.id,
+//             role: user.username,
+//         }
+//         const token = jwt.sign(payload, config.jwtSecret);
+//         res.json({
+//             user,
+//         })
+//     }
+//     catch (error) {
+//         next(error);
+//     }
+// }
 
 export const recoveryPassword = async (req, res, next) => {
     try {

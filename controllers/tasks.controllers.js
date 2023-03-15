@@ -3,11 +3,16 @@ import { pool } from "../db.js";
 
 export const getTasks = async (req, res, next) => {
     try {
+        console.log(3);
         const userId = req.user.id;
-        const [result] = await pool.query(`SELECT * FROM users LEFT JOIN tasks ON users.id = tasks.userid WHERE tasks.userid=${userId}`);
-        res.send(result);
+        console.log(4);
+        const [result] = await pool.query(`SELECT * FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE tasks.user_id=${userId}`);
+        console.log("esto es result", result)
+        console.log(5);
+        res.json(result);
     }
     catch (error) {
+        console.log(error);
         next(error);
         return res.status(500).json({ message: error.message });
     }
@@ -15,7 +20,7 @@ export const getTasks = async (req, res, next) => {
 
 export const getTask = async (req, res) => {
     const { id } = req.params;
-    const [result] = await pool.query(`SELECT * FROM tasks WHERE id = ${id} ORDER BY createdAt ASC`);
+    const [result] = await pool.query(`SELECT * FROM tasks WHERE id = ${id} ORDER BY create_at ASC`);
     try {
         if (result.length === 0) {
             return res.status(404).json({
@@ -38,7 +43,7 @@ export const createTask =
                     message: "the task must have at least title"
                 })
             }
-            const [result] = await pool.query(`INSERT INTO tasks(title, description, userid) VALUES (?, ?, ?)`, [title, description, req.user.id])
+            const [result] = await pool.query(`INSERT INTO tasks(title, description, user_id) VALUES (?, ?, ?)`, [title, description, req.user.id])
             return res.json({
                 id: result.insertId,
                 title: req.body.title,
