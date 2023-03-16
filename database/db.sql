@@ -1,6 +1,6 @@
 CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    user_name VARCHAR(40) NOT NULL UNIQUE,
+    username VARCHAR(40) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email varchar(255) NOT NULL UNIQUE,
     recovery_token varchar(255) NULL
@@ -12,5 +12,6 @@ CREATE TABLE tasks(
     description TEXT,
     done BOOLEAN NOT NULL DEFAULT 0,
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    user_id INTEGER FOREIGN KEY REFERENCES users(id)
+    user_id INTEGER,
+	FOREIGN KEY (user_id) REFERENCES users(id)
 );
