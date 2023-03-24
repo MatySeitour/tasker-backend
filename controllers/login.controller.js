@@ -55,14 +55,12 @@ export const login = async (req, res) => {
             username: user.user,
         }
         const token = jwt.sign(payload, config.jwtSecret);
-        console.log("entra en token de login", token);
         res.cookie("session", token);
         res.json({
             username: user.user,
         })
     }
     catch (error) {
-        console.log("el error tira en login")
         console.error(error)
     }
 }
@@ -82,20 +80,17 @@ export const logOut = async (req, res, next) => {
 
 export const loginVerify = async (req, res, next) => {
     try {
-        console.log("entra en loginverify", req.user);
         const user = req.user;
         const payload = {
             id: user.id,
             role: user.username,
         }
         const token = jwt.sign(payload, config.jwtSecret);
-        console.log("este es el token de verify", token)
         res.json({
             user,
         })
     }
     catch (error) {
-        console.log("el error es en login verify")
         next(error);
     }
 }
@@ -187,9 +182,6 @@ export const passwordToChange = async (req, res, next) => {
         const { token, newPassword } = req.body;
         const payload = jwt.verify(token, config.jwtSecret);
         const user = await getIdUser(payload.id);
-        if (user.recovery_token !== token) {
-            throw boom.unauthorized();
-        }
         const rta = await changePassword(user, newPassword);
         return res.json({
             rta

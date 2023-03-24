@@ -3,17 +3,11 @@ import { pool } from "../db.js";
 
 export const getTasks = async (req, res) => {
     try {
-        console.log(3);
-        console.log(req.user);
         const userId = req.user.id;
-        console.log(4);
         const [result] = await pool.query(`SELECT * FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE tasks.user_id=${userId}`);
-        console.log("esto es result", result)
-        console.log(5);
         res.json(result);
     }
     catch (error) {
-        console.log("entra aca en error de getTask")
         console.log(error);
         res.status(500).json({ message: error.message });
     }

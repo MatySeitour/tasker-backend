@@ -12,7 +12,6 @@ options.jwtFromRequest = cookieExtractor;
 options.secretOrKey = config.jwtSecret;
 
 const jwtStrategy = new Strategy(options, (payload, done) => {
-    console.log("aca entra en jwtStrategy")
     return done(null, payload);
 })
 
