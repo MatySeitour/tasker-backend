@@ -114,8 +114,9 @@ export const recoverySendMail = async (email, username) => {
     }
     const payload = { id: user.id };
     const token = jwt.sign(payload, config.jwtSecret, { expiresIn: "15min" });
-    const link = `http://localhost:5173/new-password?token=${token}`;
-    await updateRecoveryToken(user.id, token);
+    const link = `https://tasker-backend-production.up.railway.app/#/new-password?token=${token}`;
+    console.log("mail mandado");
+    console.log(user.email);
     const mail = {
         from: config.EMAIL_ADDRESS, // sender address
         to: user.email, // list of receivers
@@ -167,15 +168,6 @@ export const getIdUser = async (id) => {
     }
 }
 
-export const updateRecoveryToken = async (userId, recoveryToken) => {
-    try {
-        const [result] = await pool.query(`UPDATE users SET recovery_token=? WHERE id=?`, [recoveryToken, userId]);
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-    }
-}
 
 export const passwordToChange = async (req, res, next) => {
     try {
@@ -196,7 +188,7 @@ export const passwordToChange = async (req, res, next) => {
 export const changePassword = async (user, newPassword) => {
     try {
         const hash = await bcrypt.hash(newPassword, 10);
-        await pool.query(`UPDATE users SET recovery_token=null, password=? WHERE id=?`, [hash, user.id]);
+        await pool.query(`UPDATE users SET password=? WHERE id=?`, [hash, user.id]);
         return { message: "password changed" };
     }
     catch (error) {
